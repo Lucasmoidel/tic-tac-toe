@@ -14,7 +14,7 @@ SDL_Surface* o_surface;
 SDL_Texture* grid_texture;
 SDL_Texture* x_texture;
 SDL_Texture* o_texture;
-
+int p;
 int time_to_wait;
 int game_running = false;
 int last_frame_time = 0;
@@ -25,7 +25,7 @@ int game_state[3][3] = {
     {0, 0, 0}, 
     {0, 0, 0}
 };
-
+int winner;
 #define Win_width 950
 #define Win_height 950
 
@@ -67,6 +67,8 @@ void setup() {
     o_struct.height = 300;
     
     player = 2;
+    winner = 0;
+
 }
 
 
@@ -87,6 +89,20 @@ int main (int argc, char **argv) {
             //printf("done!\n");
         }
         last_frame_time = SDL_GetTicks();
+
+        for (p = 1; p < 3; p++)
+            if ((game_state[0][0] == p && game_state[1][1] == p && game_state[2][2] == p) || (game_state[2][2] == p && game_state[1][1] == p && game_state[2][0] == p) || (game_state[0][0] == p && game_state[0][1] == p && game_state[0][2] == p) || (game_state[1][0] == p && game_state[2][1] == p && game_state[1][2] == p) || (game_state[2][0] == p && game_state[2][1] == p && game_state[2][2] == p) || (game_state[0][0] == p && game_state[1][0] == p && game_state[2][0] == p) || (game_state[0][1] == p && game_state[1][1] == p && game_state[2][1] == p) || (game_state[0][2] == p && game_state[1][2] == p && game_state[2][2] == p)) {
+                if (p == 1) {
+                    printf("x wins");
+                    game_running = false;
+                }
+                if (p == 2) {
+                    printf("o wins");
+                    game_running = false;
+                }
+            }   
+
+
         //printf("{\n {%d, %d, %d},\n {%d, %d, %d}, \n {%d, %d, %d} \n}", game_state[0][0],game_state[0][1], game_state[0][2], game_state[1][0], game_state[1][1], game_state[1][2], game_state[2][0], game_state[2][1], game_state[2][2]);
         render();
 
