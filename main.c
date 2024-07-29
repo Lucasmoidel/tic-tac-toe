@@ -11,10 +11,15 @@ SDL_Renderer* renderer = NULL;
 SDL_Surface* grid_surface;
 SDL_Surface* x_surface;
 SDL_Surface* o_surface;
+SDL_Texture* grid_texture;
+SDL_Texture* x_texture;
+SDL_Texture* o_texture;
+
+int time_to_wait;
 int game_running = false;
 int last_frame_time = 0;
 int move_speed = 5000;
-
+int x, y;
 int game_state[3][3] = {
     {1, 1, 2}, 
     {2, 1, 2}, 
@@ -30,8 +35,6 @@ int game_state[3][3] = {
 int initialize_window();
 
 void process_input();
-
-void update();
 
 void render();
 
@@ -50,7 +53,9 @@ void setup() {
     x_surface = IMG_Load("x.png");
     o_surface = IMG_Load("o.png");
     SDL_SetWindowIcon(window, grid_surface);
-
+    grid_texture = SDL_CreateTextureFromSurface(renderer, grid_surface);
+    x_texture = SDL_CreateTextureFromSurface(renderer, x_surface);
+    o_texture = SDL_CreateTextureFromSurface(renderer, o_surface);
     x_struct.x = 0;
     x_struct.y = 0;
     x_struct.width = 300;
@@ -69,9 +74,8 @@ int main (int argc, char **argv) {
 
 
         process_input();
-        update();
         
-        int time_to_wait = frame_terget_time - (SDL_GetTicks() - last_frame_time);
+        time_to_wait = frame_terget_time - (SDL_GetTicks() - last_frame_time);
         if (time_to_wait > 0 && time_to_wait <= frame_terget_time) {
             //printf("waiting...\n");
             SDL_Delay(time_to_wait);
@@ -119,16 +123,8 @@ void process_input() {
 
 }
 
-void update() {
-    
-    //while (!SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + frame_terget_time));
-    
-}
-
 void render() {
-    SDL_Texture* grid_texture = SDL_CreateTextureFromSurface(renderer, grid_surface);
-    SDL_Texture* x_texture = SDL_CreateTextureFromSurface(renderer, x_surface);
-    SDL_Texture* o_texture = SDL_CreateTextureFromSurface(renderer, o_surface);
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
@@ -139,7 +135,7 @@ void render() {
     
     SDL_RenderCopy(renderer, grid_texture, NULL, NULL);
     //SDL_RenderCopy(renderer, x_texture, NULL, &x_rect);
-    int x, y;
+    
     for (y = 0; y < 3; y++) {
         for (x = 0; x < 3; x++) {
             if (game_state[y][x] == 1) {
