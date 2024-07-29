@@ -60,6 +60,11 @@ void setup() {
     x_struct.y = 0;
     x_struct.width = 300;
     x_struct.height = 300;
+       
+    o_struct.x = 0;
+    o_struct.y = 0;
+    o_struct.width = 300;
+    o_struct.height = 300;
     
 
 }
@@ -144,8 +149,7 @@ void render() {
                 SDL_Rect x_rect = {(int)x_struct.x, (int)x_struct.y, (int)x_struct.width, (int)x_struct.height};
 
                 SDL_RenderCopy(renderer, x_texture, NULL, &x_rect);
-            }
-            if (game_state[y][x] == 2) {
+            } else if (game_state[y][x] == 2) {
                 o_struct.x = x * 325;
                 o_struct.y = y * 325;
                 SDL_Rect o_rect = {(int)o_struct.x, (int)o_struct.y, (int)o_struct.width, (int)o_struct.height};
