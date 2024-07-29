@@ -19,17 +19,17 @@ int time_to_wait;
 int game_running = false;
 int last_frame_time = 0;
 int move_speed = 5000;
-int x, y;
+int player;
 int game_state[3][3] = {
-    {1, 1, 2}, 
-    {2, 1, 2}, 
-    {0, 2, 0}
+    {0, 0, 0}, 
+    {0, 0, 0}, 
+    {0, 0, 0}
 };
 
 #define Win_width 950
 #define Win_height 950
 
-#define FPS 2
+#define FPS 15
 #define frame_terget_time (100 / FPS)
 
 int initialize_window();
@@ -61,12 +61,12 @@ void setup() {
     x_struct.width = 300;
     x_struct.height = 300;
        
-    o_struct.x = 0;
-    o_struct.y = 0;
+    o_struct.x = 690;
+    o_struct.y = 600;
     o_struct.width = 300;
     o_struct.height = 300;
     
-
+    player = 2;
 }
 
 
@@ -87,6 +87,7 @@ int main (int argc, char **argv) {
             //printf("done!\n");
         }
         last_frame_time = SDL_GetTicks();
+        //printf("{\n {%d, %d, %d},\n {%d, %d, %d}, \n {%d, %d, %d} \n}", game_state[0][0],game_state[0][1], game_state[0][2], game_state[1][0], game_state[1][1], game_state[1][2], game_state[2][0], game_state[2][1], game_state[2][2]);
         render();
 
     }
@@ -125,6 +126,59 @@ void process_input() {
         break;
 
     }
+    int x, y;
+    if (SDL_MOUSEBUTTONDOWN == event.type) {
+        SDL_GetMouseState( &x, &y);
+        if (SDL_BUTTON_LEFT == event.button.button) {
+            if ((x >= 0 && x <= 300) && (y >= 0 && y <= 300 )){
+                if (game_state[0][0] == 0) {
+                    game_state[0][0] = player;
+                    if (player == 1) {player = 2;} else if (player == 2){ player = 1;}
+                    
+                } 
+            }else if ((x >= 325 && x <= 625) && (y >= 0 && y <= 300 )){
+                if (game_state[0][1] == 0) {
+                    game_state[0][1] = player;
+                    if (player == 1) {player = 2;} else if (player == 2){ player = 1;}
+                } 
+            }else if ((x >= 650 && x <= 950) && (y >= 0 && y <= 300 )){
+                if (game_state[0][2] == 0) {
+                    game_state[0][2] = player;
+                    if (player == 1) {player = 2;} else if (player == 2){ player = 1;}
+                } 
+            } else if ((x >= 0 && x <= 300) && (y >= 325 && y <= 625)){
+                if (game_state[1][0] == 0) {
+                    game_state[1][0] = player;
+                    if (player == 1) {player = 2;} else if (player == 2){ player = 1;}
+                } 
+            } else if ((x >= 325 && x <= 625) && (y >= 325 && y <= 625)){
+                if (game_state[1][1] == 0) {
+                    game_state[1][1] = player;
+                    if (player == 1) {player = 2;} else if (player == 2){ player = 1;}
+                } 
+            } else if ((x >= 650 && x <= 950) && (y >= 325 && y <= 625)){
+                if (game_state[1][2] == 0) {
+                    game_state[1][2] = player;
+                    if (player == 1) {player = 2;} else if (player == 2){ player = 1;}
+                } 
+            } else if ((x >= 0 && x <= 300) && (y >= 650 && y <= 950)){
+                if (game_state[2][0] == 0) {
+                    game_state[2][0] = player;
+                    if (player == 1) {player = 2;} else if (player == 2){ player = 1;}
+                } 
+            } else if ((x >= 325 && x <= 625) && (y >= 650 && y <= 950)){
+                if (game_state[2][1] == 0) {
+                    game_state[2][1] = player;
+                    if (player == 1) {player = 2;} else if (player == 2){ player = 1;}
+                } 
+            } else if ((x >= 650 && x <= 950) && (y >= 650 && y <= 950)){
+                if (game_state[2][2] == 0) {
+                    game_state[2][2] = player;
+                    if (player == 1) {player = 2;} else if (player == 2){ player = 1;}
+                } 
+            }
+        }
+    }
 
 }
 
@@ -140,7 +194,7 @@ void render() {
     
     SDL_RenderCopy(renderer, grid_texture, NULL, NULL);
     //SDL_RenderCopy(renderer, x_texture, NULL, &x_rect);
-    
+    int x, y;
     for (y = 0; y < 3; y++) {
         for (x = 0; x < 3; x++) {
             if (game_state[y][x] == 1) {
