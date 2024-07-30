@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_video.h>
+
 
 
 SDL_Window* window = NULL;
@@ -219,22 +221,7 @@ void render() {
     SDL_RenderCopy(renderer, grid_texture, NULL, NULL);
     //SDL_RenderCopy(renderer, x_texture, NULL, &x_rect);
 
-    for (p = 1; p < 3; p++) {
-        if ((game_state[0][0] == p && game_state[1][1] == p && game_state[2][2] == p) || (game_state[2][2] == p && game_state[1][1] == p && game_state[2][0] == p) || (game_state[0][0] == p && game_state[0][1] == p && game_state[0][2] == p) || (game_state[1][0] == p && game_state[2][1] == p && game_state[1][2] == p) || (game_state[2][0] == p && game_state[2][1] == p && game_state[2][2] == p) || (game_state[0][0] == p && game_state[1][0] == p && game_state[2][0] == p) || (game_state[0][1] == p && game_state[1][1] == p && game_state[2][1] == p) || (game_state[0][2] == p && game_state[1][2] == p && game_state[2][2] == p)) {
-            if (p == 1) {
-                printf("x wins");
-                SDL_RenderCopy(renderer, x_wins_texture, NULL, NULL);
-                SDL_RenderPresent(renderer);
-                game_running = false;
-            }
-            if (p == 2) {
-                printf("o wins");
-                SDL_RenderCopy(renderer, o_wins_texture, NULL, NULL);
-                SDL_RenderPresent(renderer);
-                game_running = false;
-            }
-        }  
-    } 
+
 
     int x, y;
     for (y = 0; y < 3; y++) {
@@ -255,10 +242,27 @@ void render() {
         }
     }
 
+    for (p = 1; p < 3; p++) {
+        if ((game_state[0][0] == p && game_state[1][1] == p && game_state[2][2] == p) || (game_state[0][2] == p && game_state[1][1] == p && game_state[2][0] == p) || (game_state[0][0] == p && game_state[0][1] == p && game_state[0][2] == p) || (game_state[1][0] == p && game_state[1][1] == p && game_state[1][2] == p) || (game_state[2][0] == p && game_state[2][1] == p && game_state[2][2] == p) || (game_state[0][0] == p && game_state[1][0] == p && game_state[2][0] == p) || (game_state[0][1] == p && game_state[1][1] == p && game_state[2][1] == p) || (game_state[0][2] == p && game_state[1][2] == p && game_state[2][2] == p)) {
+            if (p == 1) {
+                printf("x wins");
+                SDL_RenderCopy(renderer, x_wins_texture, NULL, NULL);
+                SDL_RenderPresent(renderer);
+                game_running = false;
+            }
+            if (p == 2) {
+                printf("o wins");
+                SDL_RenderCopy(renderer, o_wins_texture, NULL, NULL);
+                SDL_RenderPresent(renderer);
+                game_running = false;
+            }
+        }  
+    } 
+
     if ( (game_state[0][0] != 0) && (game_state[0][1] != 0) && (game_state[0][2] != 0) && (game_state[1][0] != 0) && (game_state[1][1] != 0) && (game_state[1][2] != 0) && (game_state[2][0] != 0) && (game_state[2][1] != 0) && (game_state[2][2] != 0)) {
-    SDL_RenderCopy(renderer, tie_texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
-    game_running = false;
+        SDL_RenderCopy(renderer, tie_texture, NULL, NULL);
+        SDL_RenderPresent(renderer);
+        game_running = false;
     }
 
 
